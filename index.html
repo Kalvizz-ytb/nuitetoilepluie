@@ -3,121 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <title>Nuit Étoile Pluie</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
             margin: 0;
-            height: 100vh;
+            min-height: 100vh;
             background: linear-gradient(to bottom, #0a0a2a, #1a1a3a);
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Arial', sans-serif;
+            font-family: system-ui, -apple-system, sans-serif;
             color: white;
             position: relative;
+            overflow-x: hidden;
         }
 
         .container {
-            text-align: center;
+            position: relative;
             z-index: 2;
+            min-height: 100vh;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
-        h1 {
-            font-size: 3em;
-            margin-bottom: 0.5em;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-        }
-
-        p {
-            font-size: 1.2em;
-            max-width: 600px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
-        
         .poem {
             font-style: italic;
-            margin: 2em auto;
-            padding: 1em;
+            margin: 0 auto;
+            padding: 1.5rem;
             border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
+            border-radius: 15px;
             background: rgba(0, 0, 0, 0.3);
-            max-width: 400px;
-            width: 90%;
-        }
-        
-        /* Responsive Design */
-        @media screen and (max-width: 768px) {
-            h1 {
-                font-size: 2em;
-                padding: 0 1rem;
-            }
-            
-            p {
-                font-size: 1em;
-                padding: 0 1rem;
-            }
-            
-            .poem {
-                margin: 1em auto;
-                padding: 0.8em;
-            }
-            
-            .poem p {
-                font-size: 0.9em;
-                line-height: 1.6;
-            }
-        }
-
-        @media screen and (max-width: 480px) {
-            h1 {
-                font-size: 1.5em;
-            }
-            
-            .container {
-                padding: 1rem;
-            }
-            
-            .poem {
-                padding: 0.5em;
-                margin: 0.5em auto;
-                width: 95%;
-            }
+            width: 92%;
+            max-width: 450px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         
         .poem p {
-            margin: 0.5em 0;
-            line-height: 1.8;
-            font-size: 1.1em;
+            margin: 0.8em 0;
+            line-height: 1.6;
+            font-size: 1.15rem;
+            letter-spacing: 0.02em;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
         }
 
         .star {
-            position: absolute;
+            position: fixed;
             background: white;
             border-radius: 50%;
             animation: twinkle 1s infinite alternate;
+            z-index: 1;
+            pointer-events: none;
         }
 
         .raindrop {
-            position: absolute;
-            width: 2px;
-            background: linear-gradient(transparent, rgba(255, 255, 255, 0.5));
+            position: fixed;
+            width: 1.5px;
+            background: linear-gradient(transparent, rgba(255, 255, 255, 0.4));
             animation: fall linear infinite;
+            z-index: 1;
+            pointer-events: none;
         }
 
         @keyframes twinkle {
             from { opacity: 0.2; }
-            to { opacity: 1; }
+            to { opacity: 0.8; }
         }
 
         @keyframes fall {
             from { transform: translateY(-100vh); }
             to { transform: translateY(100vh); }
         }
+
+        @media (max-width: 380px) {
+            .poem {
+                padding: 1.2rem;
+                width: 96%;
+            }
+            
+            .poem p {
+                font-size: 1.05rem;
+                line-height: 1.5;
+                margin: 0.6em 0;
+            }
+        }
+
+        /* Pour éviter les problèmes de touch sur mobile */
+        @media (hover: none) and (pointer: coarse) {
+            .container {
+                touch-action: pan-y pinch-zoom;
+            }
+        }
     </style>
 </head>
-<body>
+<body ontouchstart="">
     <div class="container">
         <div class="poem">
             <p>Sous le voile de la nuit profonde,</p>
@@ -138,37 +123,47 @@
     </div>
 
     <script>
-        // Création des étoiles
+        // Optimisation pour mobile - moins d'éléments animés
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        const starCount = isMobile ? 50 : 100;
+        const rainCount = isMobile ? 30 : 50;
+
         function createStars(count) {
             for (let i = 0; i < count; i++) {
                 const star = document.createElement('div');
                 star.className = 'star';
                 star.style.left = Math.random() * 100 + '%';
                 star.style.top = Math.random() * 100 + '%';
-                star.style.width = Math.random() * 3 + 'px';
+                star.style.width = Math.random() * 2 + 1 + 'px';
                 star.style.height = star.style.width;
                 star.style.animationDelay = Math.random() * 1 + 's';
                 document.body.appendChild(star);
             }
         }
 
-        // Création de la pluie
         function createRain(count) {
             for (let i = 0; i < count; i++) {
                 const drop = document.createElement('div');
                 drop.className = 'raindrop';
                 drop.style.left = Math.random() * 100 + '%';
-                drop.style.height = Math.random() * 20 + 20 + 'px';
-                drop.style.opacity = Math.random() * 0.3 + 0.2;
+                drop.style.height = Math.random() * 15 + 15 + 'px';
+                drop.style.opacity = Math.random() * 0.3 + 0.1;
                 drop.style.animationDuration = Math.random() * 1 + 1 + 's';
                 drop.style.animationDelay = Math.random() * 2 + 's';
                 document.body.appendChild(drop);
             }
         }
 
-        // Initialisation
-        createStars(100);
-        createRain(50);
+        // Initialisation avec détection mobile
+        createStars(starCount);
+        createRain(rainCount);
+
+        // Prévention du zoom sur double-tap pour iOS
+        document.addEventListener('touchmove', function(event) {
+            if (event.scale !== 1) {
+                event.preventDefault();
+            }
+        }, { passive: false });
     </script>
 </body>
 </html>
