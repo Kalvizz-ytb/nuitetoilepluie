@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Nuit Étoile Pluie</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background: linear-gradient(to bottom, #0a0a2a, #1a1a3a);
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Arial', sans-serif;
+            color: white;
+            position: relative;
+        }
+
+        .container {
+            text-align: center;
+            z-index: 2;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 0.5em;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        p {
+            font-size: 1.2em;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .poem {
+            font-style: italic;
+            margin: 2em auto;
+            padding: 1em;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 90%;
+        }
+        
+        /* Responsive Design */
+        @media screen and (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+                padding: 0 1rem;
+            }
+            
+            p {
+                font-size: 1em;
+                padding: 0 1rem;
+            }
+            
+            .poem {
+                margin: 1em auto;
+                padding: 0.8em;
+            }
+            
+            .poem p {
+                font-size: 0.9em;
+                line-height: 1.6;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            h1 {
+                font-size: 1.5em;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            .poem {
+                padding: 0.5em;
+                margin: 0.5em auto;
+                width: 95%;
+            }
+        }
+        
+        .poem p {
+            margin: 0.5em 0;
+            line-height: 1.8;
+            font-size: 1.1em;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 1s infinite alternate;
+        }
+
+        .raindrop {
+            position: absolute;
+            width: 2px;
+            background: linear-gradient(transparent, rgba(255, 255, 255, 0.5));
+            animation: fall linear infinite;
+        }
+
+        @keyframes twinkle {
+            from { opacity: 0.2; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fall {
+            from { transform: translateY(-100vh); }
+            to { transform: translateY(100vh); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="poem">
+            <p>Sous le voile de la nuit profonde,</p>
+            <p>Les étoiles pleurent avec moi,</p>
+            <p>Chaque goutte de pluie qui inonde</p>
+            <p>Reflète les larmes de mon émoi.</p>
+            <p>&nbsp;</p>
+            <p>Dans ce ciel d'encre et de silence,</p>
+            <p>Mes pensées dérivent, solitaires,</p>
+            <p>Comme les astres en leur errance,</p>
+            <p>Cherchant un peu de lumière.</p>
+            <p>&nbsp;</p>
+            <p>La tristesse, comme cette pluie,</p>
+            <p>Ruisselle sans jamais tarir,</p>
+            <p>Mais les étoiles dans la nuit</p>
+            <p>Me rappellent qu'il faut tenir.</p>
+        </div>
+    </div>
+
+    <script>
+        // Création des étoiles
+        function createStars(count) {
+            for (let i = 0; i < count; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = Math.random() * 3 + 'px';
+                star.style.height = star.style.width;
+                star.style.animationDelay = Math.random() * 1 + 's';
+                document.body.appendChild(star);
+            }
+        }
+
+        // Création de la pluie
+        function createRain(count) {
+            for (let i = 0; i < count; i++) {
+                const drop = document.createElement('div');
+                drop.className = 'raindrop';
+                drop.style.left = Math.random() * 100 + '%';
+                drop.style.height = Math.random() * 20 + 20 + 'px';
+                drop.style.opacity = Math.random() * 0.3 + 0.2;
+                drop.style.animationDuration = Math.random() * 1 + 1 + 's';
+                drop.style.animationDelay = Math.random() * 2 + 's';
+                document.body.appendChild(drop);
+            }
+        }
+
+        // Initialisation
+        createStars(100);
+        createRain(50);
+    </script>
+</body>
+</html>
